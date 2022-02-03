@@ -40,4 +40,13 @@ function createCartItemElement({ sku, name, salePrice }) {
   return li;
 }
 
-window.onload = () => { };
+ /* onloads com fetchproducts com argumento computador, then no results do API, foreach para encontrar elementos da const id, title, thumbnail, guardando o element usamos no creator products passando o retorno. 
+ selecionando a classe, criamos um filho com retorno de items, criando assim a secção de itens no carregamento da página */
+window.onload = () => {
+  fetchProducts('computador').then(({ results }) => results.forEach((element) => {
+    const { id, title, thumbnail } = element;
+    const item = document.querySelector('.items');
+    const items = createProductItemElement({ sku: id, name: title, image: thumbnail });
+    item.appendChild(items);
+  }));
+ };
