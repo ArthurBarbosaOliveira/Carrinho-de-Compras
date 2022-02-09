@@ -39,7 +39,9 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.addEventListener('click', cartItemClickListener);
   return li;  
 }
+const elementCart = document.querySelector('.cart__items');
  /* requisito 2 pegando dados da api fetchitem para usar no botão e adicionar ao carrinho */ 
+ /* ajuda de colegas e revisão do course conseguir entender melhor o localStorage */
 const carrinhoProdutos = async (e) => {
   const item = e.target.parentNode;
   const items = getSkuFromProductItem(item);
@@ -47,6 +49,13 @@ const carrinhoProdutos = async (e) => {
   const classe = document.querySelector('.cart__items');
   const carrinho = createCartItemElement({ sku: id, name: title, salePrice: price });
   classe.appendChild(carrinho);
+  elementCart.appendChild(carrinho);
+  saveCartItems(elementCart.innerHTML);
+};
+/* retornando o elemento do carrinho para o Storage */
+const retonarElementCart = async () => {
+  elementCart.innerHTML = await getSavedCartItems();
+  elementCart.addEventListener('click', cartItemClickListener);
 };
 
 const pesquisaProdutos = async (mercadorias) => {
@@ -66,4 +75,5 @@ const pesquisaProdutos = async (mercadorias) => {
   await pesquisaProdutos('computador');
   const botaoCarrinho = document.querySelectorAll('.item__add');
   botaoCarrinho.forEach((element) => element.addEventListener('click', carrinhoProdutos));
+  retonarElementCart();
  };
